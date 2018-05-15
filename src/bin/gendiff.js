@@ -1,5 +1,10 @@
 #! /usr/bin/env node
 
-import app from '../';
+import program from 'commander';
 
-app();
+program
+  .version('0.1.0', '-V, --version')
+  .arguments('<firstConfig> <secondConfig>')
+  .description('Compares two configuration files and shows a difference.')
+  .option('-f, --format [type]', 'Output format')
+  .parse(process.argv);

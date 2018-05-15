@@ -1,6 +1,6 @@
 {
   "name": "@lotoss/gendiff",
-  "version": "0.2.2",
+  "version": "0.2.6",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -37,5 +37,8 @@
     "eslint-plugin-flowtype": "^2.46.3",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jest": "^21.15.1"
+  },
+  "dependencies": {
+    "commander": "^2.15.1"
   }
 }
