@@ -1,0 +1,39 @@
+{
+  "name": "@lotoss/gendiff",
+  "version": "0.2.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run babel-node -- src/bin/gendiff.js",
+    "build": "NODE_ENV=production babel src --out-dir dist --sourse-map inline",
+    "prepublishOnly": "npm run build",
+    "eslint": "eslint",
+    "babel-node": "babel-node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lotoss/project-lvl2-s257.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "gendiff": "dist/bin/gendiff.js"
+  },
+  "author": "Oleksandr <prokopenko.alexander.design@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lotoss/project-lvl2-s257/issues"
+  },
+  "homepage": "https://github.com/lotoss/project-lvl2-s257#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0"
+  }
+}
