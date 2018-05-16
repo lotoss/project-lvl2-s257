@@ -3,4 +3,6 @@
   node_js:
     - v8.9.4
 
-  script: make lint
+  script:
+    - make lint
+    - make test

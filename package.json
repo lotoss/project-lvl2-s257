@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest tests",
+    "watch:test": "jest tests --watch",
     "start": "npm run babel-node -- src/bin/gendiff.js",
     "build": "NODE_ENV=production babel src --out-dir dist --sourse-map inline",
     "prepublishOnly": "npm run build",
@@ -30,15 +31,19 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.3",
+    "babel-jest": "^22.4.3",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-flowtype": "^2.46.3",
     "eslint-plugin-import": "^2.11.0",
-    "eslint-plugin-jest": "^21.15.1"
+    "eslint-plugin-jest": "^21.15.1",
+    "jest": "^22.4.3",
+    "regenerator-runtime": "^0.11.1"
   },
   "dependencies": {
-    "commander": "^2.15.1"
+    "commander": "^2.15.1",
+    "lodash": "^4.17.10"
   }
 }
