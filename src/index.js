@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { extname } from 'path';
-import union from 'lodash/uniq';
+import union from 'lodash/union';
+import has from 'lodash/has';
 
 const getDiffs = (obj1, obj2) => {
   const getDiff = (sign, key, value) => `${sign} ${key}: ${value}`;
@@ -10,10 +11,10 @@ const getDiffs = (obj1, obj2) => {
     }
 
     if (obj1[key] !== obj2[key]) {
-      if (obj2[key] !== undefined) {
+      if (has(obj2, key)) {
         rez.push(getDiff('+', key, obj2[key]));
       }
-      if (obj1[key] !== undefined) {
+      if (has(obj1, key)) {
         rez.push(getDiff('-', key, obj1[key]));
       }
     } else {
