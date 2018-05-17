@@ -3,16 +3,18 @@ import { readFileSync } from 'fs';
 
 import gendiff from '../src';
 
-test('compare same files', () => {
-  const pathToFile1 = resolve(__dirname, './__fixtures__/test1.f1.json');
-  const pathToFile2 = resolve(__dirname, './__fixtures__/test1.f2.json');
-  const rez = readFileSync(resolve(__dirname, './__fixtures__/test1.expect'), 'utf8').trim();
-  expect(gendiff(pathToFile1, pathToFile2)).toBe(rez);
-});
+const beforeJsonPath = resolve(__dirname, './__fixtures__/before.json');
+const afterJsonPath = resolve(__dirname, './__fixtures__/after.json');
 
-test('compare different files', () => {
-  const pathToFile1 = resolve(__dirname, './__fixtures__/test2.f1.json');
-  const pathToFile2 = resolve(__dirname, './__fixtures__/test2.f2.json');
-  const rez = readFileSync(resolve(__dirname, './__fixtures__/test2.expect'), 'utf8').trim();
-  expect(gendiff(pathToFile1, pathToFile2)).toBe(rez);
+const sameFilesResult = readFileSync(resolve(__dirname, './__fixtures__/same.expect'), 'utf8').trim();
+const differentFilesResult = readFileSync(resolve(__dirname, './__fixtures__/different.expect'), 'utf8').trim();
+
+describe('compare JSON', () => {
+  test('compare same files', () => {
+    expect(gendiff(beforeJsonPath, beforeJsonPath)).toBe(sameFilesResult);
+  });
+
+  test('compare different files', () => {
+    expect(gendiff(beforeJsonPath, afterJsonPath)).toBe(differentFilesResult);
+  });
 });
