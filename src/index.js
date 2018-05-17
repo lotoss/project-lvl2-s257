@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { extname } from 'path';
 import uniq from 'lodash/uniq';
 
 const getDiffs = (obj1, obj2) => {
@@ -24,10 +25,27 @@ const getDiffs = (obj1, obj2) => {
   return iter([], uniq([...Object.keys(obj1), ...Object.keys(obj2)]));
 };
 
+const getContent = (pathToFile) => {
+  const type = extname(pathToFile);
+  const content = readFileSync(pathToFile, 'utf8');
+
+  switch (type) {
+    case '.json':
+      return JSON.parse(content);
+
+    case '.yml':
+      return JSON.parse(content);
+
+    default:
+      return content;
+  }
+};
+
 export default (pathToFile1, pathToFile2) => {
   try {
-    const content1 = JSON.parse(readFileSync(pathToFile1, 'utf8'));
-    const content2 = JSON.parse(readFileSync(pathToFile2, 'utf8'));
+    const content1 = getContent(pathToFile1);
+    const content2 = getContent(pathToFile2);
+
     return getDiffs(content1, content2);
   } catch (error) {
     console.log(error);
