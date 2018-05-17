@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import { extname } from 'path';
-import uniq from 'lodash/uniq';
+import union from 'lodash/uniq';
 
 const getDiffs = (obj1, obj2) => {
   const getDiff = (sign, key, value) => `${sign} ${key}: ${value}`;
@@ -22,7 +22,8 @@ const getDiffs = (obj1, obj2) => {
 
     return iter(rez, keys);
   };
-  return iter([], uniq([...Object.keys(obj1), ...Object.keys(obj2)]));
+  const keysUnion = union(Object.keys(obj1), Object.keys(obj2));
+  return iter([], keysUnion);
 };
 
 const getContent = (pathToFile) => {
