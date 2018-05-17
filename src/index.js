@@ -3,6 +3,7 @@ import { extname } from 'path';
 import union from 'lodash/union';
 import has from 'lodash/has';
 import yaml from 'js-yaml';
+import ini from 'ini';
 
 const getDiffs = (obj1, obj2) => {
   const getDiff = (sign, key, value) => `${sign} ${key}: ${value}`;
@@ -38,6 +39,9 @@ const getContent = (pathToFile) => {
 
     case '.yml':
       return yaml.safeLoad(content);
+
+    case '.ini':
+      return ini.parse(content);
 
     default:
       return content;
