@@ -2,6 +2,7 @@ import { readFileSync } from 'fs';
 import { extname } from 'path';
 import union from 'lodash/union';
 import has from 'lodash/has';
+import yaml from 'js-yaml';
 
 const getDiffs = (obj1, obj2) => {
   const getDiff = (sign, key, value) => `${sign} ${key}: ${value}`;
@@ -36,7 +37,7 @@ const getContent = (pathToFile) => {
       return JSON.parse(content);
 
     case '.yml':
-      return JSON.parse(content);
+      return yaml.safeLoad(content);
 
     default:
       return content;
