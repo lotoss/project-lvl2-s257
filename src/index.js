@@ -1,6 +1,5 @@
 import { readFileSync } from 'fs';
 import { extname } from 'path';
-import { cons, car, cdr } from 'hexlet-pairs';
 
 import union from 'lodash/union';
 import has from 'lodash/has';
@@ -13,11 +12,8 @@ const signs = {
   remove: '-',
 };
 
-const makeDiff = (key, action, value) => cons(key, cons(action, value));
-const getKey = diff => car(diff);
-const getValue = diff => cdr(cdr(diff));
-const getAction = diff => car(cdr(diff));
-const diffToString = diff => `${signs[getAction(diff)]} ${getKey(diff)}: ${getValue(diff)}`;
+const makeDiff = (key, action, value) => ({ key, action, value });
+const diffToString = ({ action, key, value }) => `${signs[action]} ${key}: ${value}`;
 
 
 const getDiffs = (obj1, obj2) => {
