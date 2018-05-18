@@ -1,59 +1,61 @@
 import { readFileSync } from 'fs';
 import { extname } from 'path';
+import { cons, car, cdr } from 'hexlet-pairs';
+
 import union from 'lodash/union';
 import has from 'lodash/has';
-import yaml from 'js-yaml';
-import ini from 'ini';
+import pipe from 'lodash/fp/flow';
+
+import getParser from './parsers';
+
+const signs = {
+  noChange: ' ',
+  add: '+',
+  remove: '-',
+};
+
+const makeDiff = (key, action, value) => cons(key, cons(action, value));
+const getKey = diff => car(diff);
+const getValue = diff => cdr(cdr(diff));
+const getAction = diff => car(cdr(diff));
+const diffToString = diff => `${signs[getAction(diff)]} ${getKey(diff)}: ${getValue(diff)}`;
+
 
 const getDiffs = (obj1, obj2) => {
-  const getDiff = (sign, key, value) => `${sign} ${key}: ${value}`;
-  const iter = ([...rez], [key, ...keys]) => {
-    if (!key) {
-      return `{\n${rez.join('\n')}\n}`;
-    }
+  const hasNoChange = key => obj1[key] === obj2[key];
+  const isAdded = key => has(obj2, key);
+  const isRemoved = key => has(obj1, key);
 
-    if (obj1[key] !== obj2[key]) {
-      if (has(obj2, key)) {
-        rez.push(getDiff('+', key, obj2[key]));
-      }
-      if (has(obj1, key)) {
-        rez.push(getDiff('-', key, obj1[key]));
-      }
-    } else {
-      rez.push(getDiff(' ', key, obj1[key]));
+  const getDiff = (key) => {
+    if (hasNoChange(key)) {
+      return [makeDiff(key, 'noChange', obj1[key])];
     }
-
-    return iter(rez, keys);
+    return [
+      isAdded(key) ? makeDiff(key, 'add', obj2[key]) : undefined,
+      isRemoved(key) ? makeDiff(key, 'remove', obj1[key]) : undefined,
+    ].filter(val => val);
   };
+
   const keysUnion = union(Object.keys(obj1), Object.keys(obj2));
-  return iter([], keysUnion);
+
+  return keysUnion.reduce((acc, key) => [...acc, ...getDiff(key)], []);
 };
 
-const getContent = (pathToFile) => {
-  const type = extname(pathToFile);
-  const content = readFileSync(pathToFile, 'utf8');
 
-  switch (type) {
-    case '.json':
-      return JSON.parse(content);
-
-    case '.yml':
-      return yaml.safeLoad(content);
-
-    case '.ini':
-      return ini.parse(content);
-
-    default:
-      return content;
-  }
+const loadDataFromFile = (pathToFile) => {
+  const data = readFileSync(pathToFile, 'utf8');
+  const parser = getParser(extname(pathToFile));
+  return parser(data);
 };
+
+const render = (diffs = []) => `{\n${diffs.map(diffToString).join('\n')}\n}`;
 
 export default (pathToFile1, pathToFile2) => {
   try {
-    const content1 = getContent(pathToFile1);
-    const content2 = getContent(pathToFile2);
+    const content1 = loadDataFromFile(pathToFile1);
+    const content2 = loadDataFromFile(pathToFile2);
 
-    return getDiffs(content1, content2);
+    return render(getDiffs(content1, content2));
   } catch (error) {
     console.log(error);
     return error;
