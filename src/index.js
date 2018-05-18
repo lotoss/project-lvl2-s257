@@ -4,7 +4,6 @@ import { cons, car, cdr } from 'hexlet-pairs';
 
 import union from 'lodash/union';
 import has from 'lodash/has';
-import pipe from 'lodash/fp/flow';
 
 import getParser from './parsers';
 
