@@ -12,10 +12,14 @@ const afterYamlPath = resolve(__dirname, './__fixtures__/after.yml');
 const beforeIniPath = resolve(__dirname, './__fixtures__/before.ini');
 const afterIniPath = resolve(__dirname, './__fixtures__/after.ini');
 
-const sameFilesResult = readFileSync(resolve(__dirname, './__fixtures__/same.expect'), 'utf8').trim();
-const differentFilesResult = readFileSync(resolve(__dirname, './__fixtures__/different.expect'), 'utf8').trim();
+const sameFilesPath = resolve(__dirname, './__fixtures__/same.expect');
+const differentFilesPath = resolve(__dirname, './__fixtures__/different.expect');
+
 
 describe('gendiff tests', () => {
+  const sameFilesResult = readFileSync(sameFilesPath, 'utf8').trim();
+  const differentFilesResult = readFileSync(differentFilesPath, 'utf8').trim();
+
   describe('compare JSON', () => {
     test('compare same files', () => {
       expect(gendiff(beforeJsonPath, beforeJsonPath)).toBe(sameFilesResult);
