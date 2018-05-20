@@ -13,4 +13,4 @@ export default (format) => {
     throw new Error(`Wrong render format: ${format}`);
   }
   return formats[format];
-}
+};
