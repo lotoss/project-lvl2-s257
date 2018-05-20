@@ -6,17 +6,17 @@ import gendiff from '../src';
 
 describe('gendiff tests', () => {
   describe('plain config', () => {
-    const beforeJsonPath = resolve(__dirname, './__fixtures__/before.json');
-    const afterJsonPath = resolve(__dirname, './__fixtures__/after.json');
+    const beforeJsonPath = resolve(__dirname, './__fixtures__/plain/before.json');
+    const afterJsonPath = resolve(__dirname, './__fixtures__/plain/after.json');
 
-    const beforeYamlPath = resolve(__dirname, './__fixtures__/before.yml');
-    const afterYamlPath = resolve(__dirname, './__fixtures__/after.yml');
+    const beforeYamlPath = resolve(__dirname, './__fixtures__/plain/before.yml');
+    const afterYamlPath = resolve(__dirname, './__fixtures__/plain/after.yml');
 
-    const beforeIniPath = resolve(__dirname, './__fixtures__/before.ini');
-    const afterIniPath = resolve(__dirname, './__fixtures__/after.ini');
+    const beforeIniPath = resolve(__dirname, './__fixtures__/plain/before.ini');
+    const afterIniPath = resolve(__dirname, './__fixtures__/plain/after.ini');
 
-    const sameFilesPath = resolve(__dirname, './__fixtures__/same.expect');
-    const differentFilesPath = resolve(__dirname, './__fixtures__/different.expect');
+    const sameFilesPath = resolve(__dirname, './__fixtures__/plain/same.expect');
+    const differentFilesPath = resolve(__dirname, './__fixtures__/plain/different.expect');
 
     const sameFilesResult = readFileSync(sameFilesPath, 'utf8').trim();
     const differentFilesResult = readFileSync(differentFilesPath, 'utf8').trim();
