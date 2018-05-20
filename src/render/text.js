@@ -1,7 +1,6 @@
 const keyValue = (key, value) => `${key ? `${key}: ` : ''}${value}`;
 const prepended = (str, value) => str + value;
 const spaced = count => str => str.split('\n').map(item => ' '.repeat(count) + item).join('\n');
-const isUndefined = value => value === undefined;
 
 
 const stringify = (value) => {
@@ -22,24 +21,12 @@ const removed = (key, prevValue) => prepended('- ', keyValue(key, stringify(prev
 const changed = (...args) => [removed(...args), added(...args)].join('\n');
 
 
-const renders = [
-  {
-    predicate: (prevValue, nextValue) => prevValue === nextValue,
-    render: notChanged,
-  },
-  {
-    predicate: (prevValue, nextValue) => isUndefined(prevValue) && !isUndefined(nextValue),
-    render: added,
-  },
-  {
-    predicate: (prevValue, nextValue) => !isUndefined(prevValue) && isUndefined(nextValue),
-    render: removed,
-  },
-  {
-    predicate: (prevValue, nextValue) => prevValue !== nextValue,
-    render: changed,
-  },
-];
+const renders = {
+  notChanged,
+  added,
+  removed,
+  changed,
+};
 
 
 const render = ({
@@ -47,6 +34,7 @@ const render = ({
   nextValue,
   children,
   prevValue,
+  state,
 }) => {
   const renderNode = () => `${key ? `${key}: ` : ''}{\n${children.map(render).join('\n')}\n}`;
 
@@ -55,7 +43,7 @@ const render = ({
   }
 
   try {
-    const { render: renderLeaf } = renders.find(({ predicate }) => predicate(prevValue, nextValue));
+    const renderLeaf = renders[state];
     return spaced(2)(renderLeaf(key, prevValue, nextValue));
   } catch (err) {
     console.log(err);
