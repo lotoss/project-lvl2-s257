@@ -4,9 +4,6 @@ import { readFileSync } from 'fs';
 import gendiff from '../src';
 
 
-
-
-
 describe('gendiff tests', () => {
   describe('plain config', () => {
     const beforeJsonPath = resolve(__dirname, './__fixtures__/before.json');
@@ -62,8 +59,8 @@ describe('gendiff tests', () => {
     const beforeYamlPath = resolve(__dirname, './__fixtures__/nesting/before.yml');
     const afterYamlPath = resolve(__dirname, './__fixtures__/nesting/after.yml');
     //
-    const beforeIniPath = resolve(__dirname, './__fixtures__/nesting/before.ini');
-    const afterIniPath = resolve(__dirname, './__fixtures__/nesting/after.ini');
+    // const beforeIniPath = resolve(__dirname, './__fixtures__/nesting/before.ini');
+    // const afterIniPath = resolve(__dirname, './__fixtures__/nesting/after.ini');
 
     const sameFilesPath = resolve(__dirname, './__fixtures__/nesting/same.expect');
     const differentFilesPath = resolve(__dirname, './__fixtures__/nesting/different.expect');
@@ -91,14 +88,14 @@ describe('gendiff tests', () => {
       });
     });
 
-    describe.skip('compare INI', () => {
-      test('compare same files', () => {
-        expect(gendiff(beforeIniPath, beforeIniPath)).toBe(sameFilesResult);
-      });
-
-      test('compare different files', () => {
-        expect(gendiff(beforeIniPath, afterIniPath)).toBe(differentFilesResult);
-      });
-    });
+    // describe.skip('compare INI', () => {
+    //   test('compare same files', () => {
+    //     expect(gendiff(beforeIniPath, beforeIniPath)).toBe(sameFilesResult);
+    //   });
+    //
+    //   test('compare different files', () => {
+    //     expect(gendiff(beforeIniPath, afterIniPath)).toBe(differentFilesResult);
+    //   });
+    // });
   });
 });
