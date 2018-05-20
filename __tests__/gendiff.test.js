@@ -98,4 +98,14 @@ describe('gendiff tests', () => {
     //   });
     // });
   });
+
+  describe('plain format', () => {
+    const beforeJsonPath = resolve(__dirname, './__fixtures__/nesting/before.json');
+    const afterJsonPath = resolve(__dirname, './__fixtures__/nesting/after.json');
+    const differentFilesPath = resolve(__dirname, './__fixtures__/nesting/different.plain.expect');
+    const differentFilesResult = readFileSync(differentFilesPath, 'utf8').trim();
+    test('compare different files with plain output format', () => {
+      expect(gendiff(beforeJsonPath, afterJsonPath, 'plain')).toBe(differentFilesResult);
+    });
+  });
 });

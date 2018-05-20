@@ -20,11 +20,11 @@ const loadDataFromFile = (pathToFile) => {
 };
 
 
-export default (pathToFile1, pathToFile2) => {
+export default (pathToFile1, pathToFile2, format = 'text') => {
   try {
     const content1 = loadDataFromFile(pathToFile1);
     const content2 = loadDataFromFile(pathToFile2);
-    return render(getDiffAst(content1, content2));
+    return render(format)(getDiffAst(content1, content2));
   } catch (error) {
     console.log(error);
     return error;
