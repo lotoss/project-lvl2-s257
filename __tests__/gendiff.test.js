@@ -108,4 +108,16 @@ describe('gendiff tests', () => {
       expect(gendiff(beforeJsonPath, afterJsonPath, 'plain')).toBe(differentFilesResult);
     });
   });
+
+  describe('json format', () => {
+    const beforeJsonPath = resolve(__dirname, './__fixtures__/nesting/before.json');
+    const afterJsonPath = resolve(__dirname, './__fixtures__/nesting/after.json');
+    const differentFilesPath = resolve(__dirname, './__fixtures__/nesting/different.json.expect');
+    const differentFilesResult = readFileSync(differentFilesPath, 'utf8').trim();
+    test('compare different files with plain output format', () => {
+      console.log(differentFilesResult);
+      console.log(JSON.parse(differentFilesResult));
+      expect(gendiff(beforeJsonPath, afterJsonPath, 'json')).toBe(JSON.stringify(JSON.parse(differentFilesResult)));
+    });
+  });
 });

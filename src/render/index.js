@@ -1,11 +1,11 @@
 import text from './text';
 import plain from './plain';
-// import json from './json';
+import json from './json';
 
 const formats = {
   text,
   plain,
-  // json,
+  json,
 };
 
 export default (format) => {
