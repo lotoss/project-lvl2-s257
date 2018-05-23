@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "test:debugger": "NODE_ENV=dev-test node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand",
     "watch:test": "jest tests --watch",
     "start": "npm run babel-node -- src/bin/gendiff.js",

@@ -1,33 +1,24 @@
-const stringifiers = {
-  number: value => value,
-  boolean: value => value,
-  string: value => `'${value}'`,
-  object: () => 'complex value',
-};
-const stringify = value => stringifiers[typeof value](value);
+import flatten from 'lodash/flatten';
+import { getType, getKey, getChildren, getValue, getPrevValue, getNextValue, isRoot } from '../ast';
 
-const renders = {
-  added: (key, prevValue, nextValue) => `Property '${key}' was added with value: ${stringify(nextValue)}`,
-  removed: key => `Property '${key}' was removed`,
-  changed: (key, prevValue, nextValue) => `Property '${key}' was updated. From ${stringify(prevValue)} to ${stringify(nextValue)}`,
-  notChanged: () => '',
-};
+const stringify = value => typeof value === 'object' ? 'complex value' : JSON.stringify(value).replace(/"/gmi, '\'');
 
-const renderKey = (...keysArr) => keysArr.filter(key => key).join('.');
+const render = (parentKeys = []) => (node) => {
+  const renderKey = () => [...parentKeys, getKey(node)].filter(str => str).join('.');
+  const renders = {
+    AddedNode: () => `Property '${renderKey()}' was added with value: ${stringify(getValue(node))}`,
+    RemovedNode: () => `Property '${renderKey()}' was removed`,
+    ChangedNode: () => `Property '${renderKey()}' was updated. From ${stringify(getPrevValue(node))} to ${stringify(getNextValue(node))}`,
+    NotChangedNode: () => '',
+    NestedNode: () => flatten(getChildren(node).map(render([...parentKeys, getKey(node)])).filter(str => str)),
+  };
 
-const render = (parentKey = []) => ({
-  children,
-  prevValue,
-  nextValue,
-  key,
-  state,
-}) => {
-  if (children.length > 0) {
-    return children.map(render([...parentKey, key])).filter(rez => rez).join('\n');
+  const renderNode = renders[getType(node, getKey(node))];
+  if (!renderNode) {
+    throw new Error(`Unknown node type: ${getType(node)}`);
   }
 
-  const renderLeaf = renders[state];
-  return renderLeaf(renderKey(...parentKey, key), prevValue, nextValue);
+  return isRoot(node) ? renderNode().join('\n') : renderNode();
 };
 
 export default render();

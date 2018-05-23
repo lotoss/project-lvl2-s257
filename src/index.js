@@ -14,7 +14,7 @@ const loadDataFromFile = (pathToFile) => {
 };
 
 
-export default (pathToFile1, pathToFile2, format = 'text') => {
+export default (pathToFile1, pathToFile2, format = 'pretty') => {
   const content1 = loadDataFromFile(pathToFile1);
   const content2 = loadDataFromFile(pathToFile2);
   return render(format)(getDiffAst(content1, content2));

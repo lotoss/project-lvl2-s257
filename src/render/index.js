@@ -1,9 +1,9 @@
-import text from './text';
+import pretty from './pretty';
 import plain from './plain';
 import json from './json';
 
 const formats = {
-  text,
+  pretty,
   plain,
   json,
 };

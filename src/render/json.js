@@ -1,29 +1,27 @@
-const configs = {
-  notChanged: prevValue => ({ value: prevValue }),
-  added: (prevValue, nextValue) => ({ value: nextValue }),
-  removed: prevValue => ({ value: prevValue }),
-  changed: (prevValue, nextValue) => ({ before: prevValue, after: nextValue }),
-};
+import { getType, getKey, getChildren, getValue, getPrevValue, getNextValue } from '../ast';
 
-
-const getOption = (state, prevValue, nextValue) => configs[state](prevValue, nextValue);
-
-const renderNode = ({
-  prevValue,
-  nextValue,
-  state,
-  children,
-}) => {
-  if (children.length > 0) {
-    return children.reduce(
-      (acc, { key: itemKey, ...item }) => ({ ...acc, [itemKey]: renderNode(item) }),
+const render = (node) => {
+  const renders = {
+    NotChangedNode: () => ({ type: getType(node), value: getValue(node) }),
+    AddedNode: () => ({ type: getType(node), value: getValue(node) }),
+    RemovedNode: () => ({ type: getType(node), value: getValue(node) }),
+    ChangedNode: () => ({
+      type: getType(node),
+      before: getPrevValue(node),
+      after: getNextValue(node),
+    }),
+    NestedNode: () => getChildren(node).reduce(
+      (acc, child) => ({ ...acc, [getKey(child)]: render(child) }),
       {},
-    );
-  }
-  return {
-    state,
-    ...getOption(state, prevValue, nextValue),
+    ),
   };
+
+  const renderNode = renders[getType(node)];
+  if (!renderNode) {
+    throw new Error(`Unknown node type: ${getType(node)}`);
+  }
+
+  return renderNode();
 };
 
-export default ast => JSON.stringify(renderNode(ast));
+export default ast => JSON.stringify(render(ast));
