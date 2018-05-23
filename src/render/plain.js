@@ -1,7 +1,12 @@
 import flatten from 'lodash/flatten';
 import { getType, getKey, getChildren, getValue, getPrevValue, getNextValue, isRoot } from '../ast';
 
-const stringify = value => typeof value === 'object' ? 'complex value' : JSON.stringify(value).replace(/"/gmi, '\'');
+const stringify = (value) => {
+  if (typeof value === 'object') {
+    return 'complex value';
+  }
+  return JSON.stringify(value).replace(/"/gmi, '\'');
+};
 
 const render = (parentKeys = []) => (node) => {
   const renderKey = () => [...parentKeys, getKey(node)].filter(str => str).join('.');
@@ -10,7 +15,8 @@ const render = (parentKeys = []) => (node) => {
     RemovedNode: () => `Property '${renderKey()}' was removed`,
     ChangedNode: () => `Property '${renderKey()}' was updated. From ${stringify(getPrevValue(node))} to ${stringify(getNextValue(node))}`,
     NotChangedNode: () => '',
-    NestedNode: () => flatten(getChildren(node).map(render([...parentKeys, getKey(node)])).filter(str => str)),
+    NestedNode: () =>
+      flatten(getChildren(node).map(render([...parentKeys, getKey(node)])).filter(str => str)),
   };
 
   const renderNode = renders[getType(node, getKey(node))];

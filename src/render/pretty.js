@@ -39,7 +39,8 @@ const renderKeyValue = (key, value) => {
 
 const render = (node) => {
   const renders = {
-    NotChangedNode: () => flatten([spaced(2)(renderKeyValue(getKey(node), stringify(getValue(node))))]),
+    NotChangedNode: () =>
+      flatten([spaced(2)(renderKeyValue(getKey(node), stringify(getValue(node))))]),
     AddedNode: () => spaced(2, true)(flatten([renderKeyValue(`+ ${getKey(node)}`, stringify(getValue(node)))])),
     RemovedNode: () => spaced(2, true)(flatten([renderKeyValue(`- ${getKey(node)}`, stringify(getValue(node)))])),
     ChangedNode: () => flatten([
